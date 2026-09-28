@@ -1,0 +1,173 @@
+components:
+  schemas:
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Operacion exitosa
+        payload:
+          type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        error:
+          type: string
+          example: USER_NOT_FOUND
+        message:
+          type: string
+          example: Usuario no encontrado
+
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64a0e7f8c1b9f3e5d6a7b8c9
+        firstName:
+          type: string
+          example: Martina
+        lastName:
+          type: string
+          example: Gomez
+        email:
+          type: string
+          example: martina@test.com
+        password:
+          type: string
+          example: "123456"
+        role:
+          type: string
+          enum: [admin, customer, store]
+          example: customer
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+
+    Document:
+      type: object
+      properties:
+        originalName:
+          type: string
+          example: documento.pdf
+        fileName:
+          type: string
+          example: 3f1c2d5e-9b8a-4f1c-8f0e-1a2b3c4d5e6f.pdf
+        path:
+          type: string
+          example: uploads/documents/3f1c2d5e.pdf
+        mimeType:
+          type: string
+          example: application/pdf
+        size:
+          type: number
+          example: 1024
+        type:
+          type: string
+          example: user_document
+
+    Store:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64a0e7f8c1b9f3e5d6a7b8c9
+        name:
+          type: string
+          example: Kiosco Centro
+        address:
+          type: string
+          example: Av. Siempre Viva 742
+        owner:
+          type: string
+          example: 64a0e7f8c1b9f3e5d6a7b8d0
+        isActive:
+          type: boolean
+          example: true
+
+    OrderItem:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Caja mediana
+        quantity:
+          type: number
+          example: 2
+        price:
+          type: number
+          example: 1500
+
+    Order:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64a0e7f8c1b9f3e5d6a7b8c9
+        customer:
+          type: string
+          example: 64a0e7f8c1b9f3e5d6a7b8d0
+        store:
+          type: string
+          example: 64a0e7f8c1b9f3e5d6a7b8d1
+        deliveryAddress:
+          type: string
+          example: Av. Siempre Viva 742
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        total:
+          type: number
+          example: 3800
+        status:
+          type: string
+          enum: [created, assigned, picked_up, in_transit, delivered, cancelled]
+          example: created
+        priority:
+          type: string
+          enum: [low, normal, high]
+          example: normal
+        proof:
+          type: object
+          nullable: true
+          properties:
+            originalName:
+              type: string
+              example: comprobante.pdf
+            fileName:
+              type: string
+            path:
+              type: string
+            mimeType:
+              type: string
+            size:
+              type: number
+
+  responses:
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ValidationError:
+      description: Datos invalidos o incompletos
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

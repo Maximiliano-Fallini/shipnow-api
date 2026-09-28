@@ -1,0 +1,118 @@
+paths:
+  /api/stores:
+    get:
+      summary: Obtener todos los comercios
+      tags:
+        - Comercios
+      responses:
+        "200":
+          description: Lista de comercios
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Comercios obtenidos
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Store'
+    post:
+      summary: Crear un comercio
+      tags:
+        - Comercios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, address, owner]
+              properties:
+                name:
+                  type: string
+                  example: Kiosco Centro
+                address:
+                  type: string
+                  example: Av. Siempre Viva 742
+                owner:
+                  type: string
+                  example: 64a0e7f8c1b9f3e5d6a7b8d0
+      responses:
+        "201":
+          description: Comercio creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+
+  /api/stores/{sid}:
+    parameters:
+      - name: sid
+        in: path
+        required: true
+        description: Id del comercio
+        schema:
+          type: string
+    get:
+      summary: Obtener un comercio por id
+      tags:
+        - Comercios
+      responses:
+        "200":
+          description: Comercio encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "404":
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Actualizar un comercio
+      tags:
+        - Comercios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Kiosco Centro Actualizado
+                address:
+                  type: string
+                  example: Av. Siempre Viva 742
+                isActive:
+                  type: boolean
+                  example: true
+      responses:
+        "200":
+          description: Comercio actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "404":
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Eliminar un comercio
+      tags:
+        - Comercios
+      responses:
+        "200":
+          description: Comercio eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "404":
+          $ref: '#/components/responses/NotFound'

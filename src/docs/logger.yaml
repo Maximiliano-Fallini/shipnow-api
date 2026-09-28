@@ -1,0 +1,14 @@
+paths:
+  /api/logger:
+    get:
+      summary: Generar logs de prueba en todos los niveles
+      description: Endpoint interno disponible solo fuera de produccion. Escribe mensajes en los niveles debug, http, info, warn y error.
+      tags:
+        - Logger
+      responses:
+        "200":
+          description: Logs de prueba generados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'

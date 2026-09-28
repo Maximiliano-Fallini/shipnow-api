@@ -1,0 +1,164 @@
+paths:
+  /api/users:
+    get:
+      summary: Obtener todos los usuarios
+      tags:
+        - Usuarios
+      responses:
+        "200":
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Usuarios obtenidos
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+    post:
+      summary: Crear un usuario
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [firstName, lastName, email, password]
+              properties:
+                firstName:
+                  type: string
+                  example: Martina
+                lastName:
+                  type: string
+                  example: Gomez
+                email:
+                  type: string
+                  example: martina@test.com
+                password:
+                  type: string
+                  example: "123456"
+                role:
+                  type: string
+                  enum: [admin, customer, store]
+                  example: customer
+      responses:
+        "201":
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+
+  /api/users/{uid}:
+    parameters:
+      - name: uid
+        in: path
+        required: true
+        description: Id del usuario
+        schema:
+          type: string
+        example: 64a0e7f8c1b9f3e5d6a7b8c9
+    get:
+      summary: Obtener un usuario por id
+      tags:
+        - Usuarios
+      responses:
+        "200":
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "404":
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Actualizar un usuario
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: Martina
+                lastName:
+                  type: string
+                  example: Gomez Actualizada
+                email:
+                  type: string
+                  example: martina@test.com
+      responses:
+        "200":
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "404":
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Eliminar un usuario
+      tags:
+        - Usuarios
+      responses:
+        "200":
+          description: Usuario eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+  /api/users/{uid}/documents:
+    parameters:
+      - name: uid
+        in: path
+        required: true
+        description: Id del usuario
+        schema:
+          type: string
+    post:
+      summary: Subir un documento del usuario
+      description: Acepta archivos PDF. El archivo se envia en el campo document y el tipo en el campo type (user_document).
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  type: string
+                  format: binary
+                type:
+                  type: string
+                  example: user_document
+      responses:
+        "201":
+          description: Archivo subido y metadatos guardados en el usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFound'

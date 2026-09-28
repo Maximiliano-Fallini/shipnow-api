@@ -1,0 +1,29 @@
+{
+  "name": "shipnow-api",
+  "version": "1.0.0",
+  "description": "API REST base para la gestión de logística y envíos.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "mocha --timeout 10000 ./tests/**/*.test.js"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5",
+    "multer": "^2.4.0",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
+    "winston": "^3.19.0"
+  },
+  "devDependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^12.0.2",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.3.0"
+  }
+}

@@ -1,0 +1,21 @@
+paths:
+  /health:
+    get:
+      summary: Verificar estado de la API
+      description: Endpoint para verificar si ShipNow esta funcionando correctamente.
+      tags:
+        - Health
+      responses:
+        "200":
+          description: API funcionando correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: API funcionando

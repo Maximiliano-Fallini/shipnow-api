@@ -1,0 +1,221 @@
+paths:
+  /api/mocks/mockingusers:
+    get:
+      summary: Generar usuarios simulados (sin guardar)
+      description: Genera usuarios de prueba con faker. Acepta el parametro opcional count (maximo 100, por defecto 50).
+      tags:
+        - Mocks
+      parameters:
+        - name: count
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 10
+      responses:
+        "200":
+          description: Usuarios simulados generados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+
+  /api/mocks/mockingorders:
+    get:
+      summary: Generar pedidos simulados (sin guardar)
+      description: Genera pedidos de prueba con faker. Acepta el parametro opcional count (maximo 100, por defecto 50).
+      tags:
+        - Mocks
+      parameters:
+        - name: count
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: 10
+      responses:
+        "200":
+          description: Pedidos simulados generados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+
+  /api/mocks/createMockUser:
+    post:
+      summary: Crear un usuario mock en la base
+      tags:
+        - Mocks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum: [admin, customer, store]
+                  example: customer
+      responses:
+        "201":
+          description: Usuario mock creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+
+  /api/mocks/createMockUsers:
+    post:
+      summary: Crear varios usuarios mock en la base
+      tags:
+        - Mocks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  example: 5
+      responses:
+        "201":
+          description: Usuarios mock creados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+
+  /api/mocks/createMockCustomers:
+    post:
+      summary: Crear clientes mock en la base
+      tags:
+        - Mocks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  example: 5
+      responses:
+        "201":
+          description: Clientes mock creados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+
+  /api/mocks/createMockOwners:
+    post:
+      summary: Crear propietarios y comercios mock en la base
+      tags:
+        - Mocks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  example: 3
+      responses:
+        "201":
+          description: Propietarios y comercios mock creados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+
+  /api/mocks/createMockOrders:
+    post:
+      summary: Crear pedidos mock en la base
+      tags:
+        - Mocks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [customerId, storeId]
+              properties:
+                count:
+                  type: integer
+                  example: 5
+                customerId:
+                  type: string
+                  example: 64a0e7f8c1b9f3e5d6a7b8d0
+                storeId:
+                  type: string
+                  example: 64a0e7f8c1b9f3e5d6a7b8d1
+      responses:
+        "201":
+          description: Pedidos mock creados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+
+  /api/mocks/generateData:
+    post:
+      summary: Generar datos mock completos (usuarios, comercios y pedidos)
+      tags:
+        - Mocks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                users:
+                  type: integer
+                  example: 5
+                orders:
+                  type: integer
+                  example: 5
+      responses:
+        "201":
+          description: Datos mock generados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
